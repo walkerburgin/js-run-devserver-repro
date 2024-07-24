@@ -47,8 +47,8 @@ def bundle_npm_package():
         env = {
             "DEBUG": "vite:resolve",
             "FORCE_COLOR": "1",
-            # "JS_BINARY__LOG_INFO": "1",
-            # "JS_BINARY__LOG_DEBUG": "1",
+            "JS_BINARY__LOG_INFO": "1",
+            "JS_BINARY__LOG_DEBUG": "1",
         },
         out_dirs = ["dist"],
         silent_on_success = False,
@@ -68,8 +68,8 @@ def bundle_npm_package():
         env = {
             "DEBUG": "vite:resolve",
             "FORCE_COLOR": "1",
-            # "JS_BINARY__LOG_INFO": "1",
-            # "JS_BINARY__LOG_DEBUG": "1",
+            "JS_BINARY__LOG_INFO": "1",
+            "JS_BINARY__LOG_DEBUG": "1",
         },
         tool = ":vite_bin",
         visibility = ["//visibility:public"],
@@ -87,8 +87,8 @@ def bundle_npm_package():
         env = {
             "DEBUG": "vite:resolve",
             "FORCE_COLOR": "1",
-            # "JS_BINARY__LOG_INFO": "1",
-            # "JS_BINARY__LOG_DEBUG": "1",
+            "JS_BINARY__LOG_INFO": "1",
+            "JS_BINARY__LOG_DEBUG": "1",
         },
         tool = ":vite_bin",
         visibility = ["//visibility:public"],

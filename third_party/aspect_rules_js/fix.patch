@@ -1,0 +1,79 @@
+diff --git a/js/private/js_run_devserver.mjs b/js/private/js_run_devserver.mjs
+index bd6f2659..4edf4ebb 100644
+--- a/js/private/js_run_devserver.mjs
++++ b/js/private/js_run_devserver.mjs
+@@ -251,11 +251,38 @@ async function sync(files, sandbox, writePerm) {
+     console.error(`Syncing ${files.length} files && folders...`)
+     const startTime = perf_hooks.performance.now()
+ 
++    async function syncFiles(files) {
++        return (
++            await Promise.all(
++                files.map(async (file) => {
++                    const src = path.join(RUNFILES_ROOT, file)
++                    const dst = path.join(sandbox, file)
++                    return await syncRecursive(src, dst, sandbox, writePerm)
++                })
++            )
++        ).reduce((s, t) => s + t, 0)
++    }
++
++    let totalSynced = 0
++
+     const [virtualStore1pFiles, remainingFiles] = partitionArray(
+         files,
+         is1pVirtualStoreDep
+     )
+ 
++    const [nodeModules1pFiles, otherFiles] = partitionArray(
++        remainingFiles,
++        isNodeModulePath,
++    )
++
++    if (otherFiles.length > 0 && process.env.JS_BINARY__LOG_DEBUG) {
++        console.error(
++            `Syncing ${otherFiles.length} first party files && folders...`
++        )
++    }
++
++    totalSynced += await syncFiles(otherFiles)
++
+     if (virtualStore1pFiles.length > 0 && process.env.JS_BINARY__LOG_DEBUG) {
+         console.error(
+             `Syncing ${virtualStore1pFiles.length} first party package store dep(s)`
+@@ -264,31 +291,15 @@ async function sync(files, sandbox, writePerm) {
+ 
+     // Sync first-party package store files first since correctly syncing direct 1p node_modules
+     // symlinks depends on checking if the package store synced files exist.
+-    let totalSynced = (
+-        await Promise.all(
+-            virtualStore1pFiles.map(async (file) => {
+-                const src = path.join(RUNFILES_ROOT, file)
+-                const dst = path.join(sandbox, file)
+-                return await syncRecursive(src, dst, sandbox, writePerm)
+-            })
+-        )
+-    ).reduce((s, t) => s + t, 0)
++    totalSynced += await syncFiles(virtualStore1pFiles)
+ 
+-    if (remainingFiles.length > 0 && process.env.JS_BINARY__LOG_DEBUG) {
++    if (nodeModules1pFiles.length > 0 && process.env.JS_BINARY__LOG_DEBUG) {
+         console.error(
+-            `Syncing ${remainingFiles.length} other files && folders...`
++            `Syncing ${nodeModules1pFiles.length} first party node_modules dir(s)`
+         )
+     }
+ 
+-    totalSynced += (
+-        await Promise.all(
+-            remainingFiles.map(async (file) => {
+-                const src = path.join(RUNFILES_ROOT, file)
+-                const dst = path.join(sandbox, file)
+-                return await syncRecursive(src, dst, sandbox, writePerm)
+-            })
+-        )
+-    ).reduce((s, t) => s + t, 0)
++    totalSynced += await syncFiles(nodeModules1pFiles)
+ 
+     var endTime = perf_hooks.performance.now()
+     console.error(

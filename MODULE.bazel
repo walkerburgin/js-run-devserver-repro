@@ -1,6 +1,12 @@
 bazel_dep(name = "aspect_bazel_lib", version = "2.7.7")
-bazel_dep(name = "aspect_rules_js", version = "2.0.0-rc2")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
+
+# aspect_rules_js
+# --------------------------------------------------------------------------------
+bazel_dep(name = "aspect_rules_js", version = "2.0.0-rc6")
+
+# Un-comment to build with a proposed fix
+# single_version_override(module_name = "aspect_rules_js", patches = ["//third_party/aspect_rules_js:fix.patch"], patch_strip = 1)
 
 # rules_nodejs
 # --------------------------------------------------------------------------------
