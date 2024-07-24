@@ -1,0 +1,19 @@
+{
+  "name": "js-run-devserver-repro",
+  "scripts": {
+    "build": "bazel build //...",
+    "dev": "ibazel run //apps/foo-app:dev"
+  },
+  "author": "Walker Burgin <walkerburgin@gmail.com>",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.5.0",
+  "devDependencies": {
+    "@bazel/ibazel": "^0.25.0",
+    "ts-bazel-plugin": "^0.1.0",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": []
+  }
+}

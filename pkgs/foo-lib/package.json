@@ -1,0 +1,14 @@
+{
+  "name": "@monorepo/foo-lib",
+  "exports": {
+    ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "bazel build :all"
+  },
+  "author": "Walker Burgin <walkerburgin@gmail.com>",
+  "license": "UNLICENSED"
+}

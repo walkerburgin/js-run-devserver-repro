@@ -1,0 +1,14 @@
+{
+  "name": "@monorepo/foo-app",
+  "author": "Walker Burgin <walkerburgin@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "bazel build :all"
+  },
+  "dependencies": {
+    "@monorepo/foo-lib": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
+  }
+}

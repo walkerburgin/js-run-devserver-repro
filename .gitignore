@@ -1,0 +1,9 @@
+.DS_Store
+.idea
+*.log
+*.swp
+.swc/
+node_modules/
+dist/
+/bazel-*
+MODULE.bazel.lock
