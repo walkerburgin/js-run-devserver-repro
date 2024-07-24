@@ -56,3 +56,5 @@ So even though `//pkgs/foo-lib` files are copied into the sandbox, they aren't w
         ├── package.json
         └── tsconfig.json
 ```
+
+I think the sandbox is broken when pairedwith `js_library()`. When [`sync()`](https://github.com/aspect-build/rules_js/blob/1696b070a3d1878b153dd12aafab12cee95a9b32/js/private/js_run_devserver.mjs#L250-L299) runs, it tries to sync `node_modules/.aspect_rules_js/@monorepo+foo-lib@0.0.0/node_modules/@monorepo/foo-lib` before `pkgs/foo-lib/**` exists in the sandbox. This repo has a patch for a potential fix in `third_party/aspect_rules_js/fix.patch`.
